@@ -7,7 +7,7 @@
   -> `npm start`
   
 
-**Note= Current /explain will not work as the free api locks the Ip address of first call**
+*Note : Current /explain will not work as the free api locks the Ip address of first call*
 
  ## Result & Deployment
 
