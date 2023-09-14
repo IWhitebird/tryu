@@ -3,7 +3,7 @@
  * @param {import('probot').Probot} app
  */
 
-const OpenAI = require("openai");
+// const OpenAI = require("openai");
 const axios = require("axios");
 const result = require("./data");
 
