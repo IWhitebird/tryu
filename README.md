@@ -1,5 +1,6 @@
 # TryU: Pr helper
  GithubApp made with Probot for Executing and Explanation of a Pull Request.
+ I used free api from discord "Pawan.krd" for LLM and used PISTON API for executing the code 
 
  ## Run Locally
   Clone this repo then just run this commands
