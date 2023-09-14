@@ -1,6 +1,8 @@
 # TryU: Pr helper
  GithubApp made with Probot for Executing and Explanation of a Pull Request.
- I used free api from discord "Pawan.krd" for LLM and used PISTON API for executing the code 
+ I used free API from discord "Pawan.krd" for LLM and used PISTON API for executing the code.
+ I need to run the bot locally for it to work, I also deployed webhook on Vercel but FREE LLM API has restricted IP 
+ and I dont have GPT API 
  
  ## Clone this repo
   Clone this repo then just run this commands
