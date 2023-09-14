@@ -3,10 +3,13 @@
 
  ## Run Locally
   Clone this repo then just run this commands
+  
   -> `npm install`
   
   -> `npm start`
  ## Run on Docker
+  My Docker Hub repo `https://hub.docker.com/r/iwhitebird/tryu-github-app/tags`
+ 
   `docker pull iwhitebird/tryu-github-app:latest`
   
   `docker run -d -p 3000:3000 --name TryU iwhitebird/tryu-github-app:latest`
