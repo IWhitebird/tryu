@@ -8,6 +8,9 @@ const axios = require("axios");
 const result = require("./data");
 
 module.exports = (app) => {
+
+  app.log("PROBOT WEBHOOK");
+
   app.on(
     ["pull_request.opened", "pull_request.reopened", "pull_request.edited"],
     async (context) => {
