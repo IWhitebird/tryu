@@ -1,0 +1,135 @@
+/**
+ * This is the main entrypoint to your Probot app
+ * @param {import('probot').Probot} app
+ */
+
+const OpenAI = require("openai");
+const axios = require("axios");
+
+module.exports = (app) => {
+  app.on(
+    ["pull_request.opened", "pull_request.reopened", "pull_request.edited"],
+    async (context) => {
+      const repoName = context.payload.repository.name;
+      const repoOwner = context.payload.repository.owner.login;
+      const pullNumber = context.payload.number;
+
+      const files = await context.octokit.pulls.listFiles({
+        repo: repoName,
+        owner: repoOwner,
+        pull_number: pullNumber,
+      });
+
+      if (!files || files.data.length === 0) {
+        context.log.warn("No files found in the pull request.");
+        return;
+      }
+
+      for (const file of files.data) {
+        const fileContent = await context.octokit.repos.getContent({
+          repo: repoName,
+          owner: repoOwner,
+          path: file.filename,
+          ref: context.payload.pull_request.head.sha,
+        });
+
+        const codeChanges = Buffer.from(
+          fileContent.data.content,
+          "base64"
+        ).toString("utf-8");
+
+        if (context.payload.pull_request.body.includes("/explain")) {
+          const explanation = await getExplanation(codeChanges);
+
+          context.octokit.issues.createComment({
+            repo: repoName,
+            owner: repoOwner,
+            issue_number: pullNumber,
+            body: `Explanation for changes in ${file.filename}:\n${explanation}\n`,
+          });
+        }
+
+        if (context.payload.pull_request.body.includes("/execute")) {
+          const output = await getOutput(codeChanges, file.filename);
+
+          context.octokit.issues.createComment({
+            repo: repoName,
+            owner: repoOwner,
+            issue_number: pullNumber,
+            body: `Output for changes in ${file.filename}:\n${output}\n`,
+          });
+        }
+      }
+    }
+  );
+
+  async function getOutput(code, filename) {
+    try {
+      const filetype = filename.split(".").pop();
+
+      const output = await axios.post(
+        "https://emkc.org/api/v2/piston/execute",
+        {
+          language: filetype,
+          version: "18.15.0",
+          files: [
+            {
+              content: code,
+            },
+          ],
+        }
+      );
+
+      console.log(output.data);
+
+      return output.data.run.output;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async function getExplanation(code) {
+    try {
+      const data = {
+        model: "pai-001-light-beta",
+        prompt: `Explain this code to me:\n' + ${code} + '\n\nHuman:`,
+        temperature: 0.7,
+        max_tokens: 256,
+        stop: ["Human:", "AI:"],
+      };
+
+      const headers = {
+        Authorization: `Bearer ${process.env.FREE_LLM}`,
+        "Content-Type": "application/json",
+      };
+
+      const response = await axios.post(
+        "https://api.pawan.krd/v1/completions",
+        data,
+        { headers }
+      );
+
+      console.log(response);
+
+      return response.data.choices[0].text;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  //GPT API IF AVIALABLE
+  // async function getExplanation(code){
+  //   try{
+  //     const myopenai = new OpenAI(process.env.OPENAI_API_KEY);
+  //     const response = await myopenai.chat.completions.create({
+  //       model: "gpt-3.5-turbo",
+  //       messages: [{"role": "system", "content": `Explain me this code ${code}`},],
+  //     });
+  //     console.log(response);
+  //     return response.data.choices[0].text;
+  //   }
+  //   catch(err){
+  //     console.log(err)
+  //   }
+  // }
+};
