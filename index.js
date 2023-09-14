@@ -5,6 +5,7 @@
 
 const OpenAI = require("openai");
 const axios = require("axios");
+const result = require("./data");
 
 module.exports = (app) => {
   app.on(
@@ -66,12 +67,13 @@ module.exports = (app) => {
   async function getOutput(code, filename) {
     try {
       const filetype = filename.split(".").pop();
+      const version = result[filetype];
 
       const output = await axios.post(
         "https://emkc.org/api/v2/piston/execute",
         {
           language: filetype,
-          version: "18.15.0",
+          version: version,
           files: [
             {
               content: code,
@@ -79,8 +81,6 @@ module.exports = (app) => {
           ],
         }
       );
-
-      console.log(output.data);
 
       return output.data.run.output;
     } catch (err) {
