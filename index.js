@@ -39,7 +39,10 @@ module.exports = (app) => {
           "base64"
         ).toString("utf-8");
 
-        if (context.payload.pull_request.body !== null && context.payload.pull_request.body.includes("/explain")) {
+        if (
+          context.payload.pull_request.body !== null &&
+          context.payload.pull_request.body.includes("/explain")
+        ) {
           const explanation = await getExplanation(codeChanges);
 
           context.octokit.issues.createComment({
@@ -50,10 +53,13 @@ module.exports = (app) => {
           });
         }
 
-        if (context.payload.pull_request.body !== null && context.payload.pull_request.body.includes("/execute")) {
+        if (
+          context.payload.pull_request.body !== null &&
+          context.payload.pull_request.body.includes("/execute")
+        ) {
           const output = await getOutput(codeChanges, file.filename);
 
-          if(output && output.length > 0){
+          if (output && output.length > 0) {
             context.octokit.issues.createComment({
               repo: repoName,
               owner: repoOwner,
@@ -67,7 +73,6 @@ module.exports = (app) => {
   );
 
   app.on(["pull_request_review_comment"], async (context) => {
-    
     const repoName = context.payload.repository.name;
     const repoOwner = context.payload.repository.owner.login;
     const pullNumber = context.payload.pull_request.number;
@@ -84,9 +89,7 @@ module.exports = (app) => {
       return;
     }
 
-
     for (const file of files.data) {
-
       const fileContent = await context.octokit.repos.getContent({
         repo: repoName,
         owner: repoOwner,
@@ -99,9 +102,11 @@ module.exports = (app) => {
         "base64"
       ).toString("utf-8");
 
-
-      if (comment !== null && comment.includes("/explain") && file.filename === context.payload.comment.path) {
-        
+      if (
+        comment !== null &&
+        comment.includes("/explain") &&
+        file.filename === context.payload.comment.path
+      ) {
         const explanation = await getExplanation(codeChanges);
 
         context.octokit.rest.pulls.createReviewComment({
@@ -113,14 +118,16 @@ module.exports = (app) => {
           path: context.payload.comment.path,
           position: context.payload.comment.position,
         });
-
       }
 
-      if (comment !== null && comment.includes("/execute") && file.filename === context.payload.comment.path) {
+      if (
+        comment !== null &&
+        comment.includes("/execute") &&
+        file.filename === context.payload.comment.path
+      ) {
         const output = await getOutput(codeChanges, file.filename);
-        
-        if(output && output.length > 0){
 
+        if (output && output.length > 0) {
           context.octokit.rest.pulls.createReviewComment({
             repo: repoName,
             owner: repoOwner,
@@ -129,8 +136,7 @@ module.exports = (app) => {
             commit_id: context.payload.comment.commit_id,
             path: context.payload.comment.path,
             position: context.payload.comment.position,
-          });          
-
+          });
         }
       }
     }
