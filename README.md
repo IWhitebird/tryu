@@ -1,14 +1,14 @@
 # TryU: Pr helper
  GithubApp made with Probot for Executing and Explanation of a Pull Request.
  I used free api from discord "Pawan.krd" for LLM and used PISTON API for executing the code 
-
- ## Run Locally
+ 
+ ## Clone this repo
   Clone this repo then just run this commands
   
   -> `npm install`
   
   -> `npm start`
- ## Run on Docker
+ ## Use Docker
   My Docker Hub repo `https://hub.docker.com/r/iwhitebird/tryu-github-app/tags`
  
   `docker pull iwhitebird/tryu-github-app:latest`
