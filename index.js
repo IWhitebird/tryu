@@ -53,12 +53,15 @@ module.exports = (app) => {
         if (context.payload.pull_request.body.includes("/execute")) {
           const output = await getOutput(codeChanges, file.filename);
 
-          context.octokit.issues.createComment({
-            repo: repoName,
-            owner: repoOwner,
-            issue_number: pullNumber,
-            body: `Output for changes in ${file.filename}:\n${output}\n`,
-          });
+          if(output && output.length > 0){
+            context.octokit.issues.createComment({
+              repo: repoName,
+              owner: repoOwner,
+              issue_number: pullNumber,
+              body: `Output for changes in ${file.filename}:\n${output}\n`,
+            });
+
+          }
         }
       }
     }
@@ -92,7 +95,7 @@ module.exports = (app) => {
     try {
       const data = {
         model: "pai-001-light-beta",
-        prompt: `Explain this code to me:\n' + ${code} + '\n\nHuman:`,
+        prompt: `Explain this code to me:\n' + ${code} + '\n\n`,
         temperature: 0.7,
         max_tokens: 256,
         stop: ["Human:", "AI:"],
@@ -108,8 +111,6 @@ module.exports = (app) => {
         data,
         { headers }
       );
-
-      console.log(response);
 
       return response.data.choices[0].text;
     } catch (err) {
