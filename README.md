@@ -1,20 +1,29 @@
-# TryU : Pr helper
+# TryU: Pr helper
  GithubApp made with Probot for Executing and Explanation of a Pull Request.
 
  ## Run Locally
   Clone this repo then just run this commands
   -> `npm install`
   -> `npm start`
+  
 
 **Note= Current /explain will not work as the free api locks the Ip address of first call**
 
  ## Result & Deployment
 
+You can add **/explain** and **/execute** in the description while creating a pr and TryU-bot will automatically generate an explanation and execution(only if the code gives some output)
+
+https://github.com/IWhitebird/tryu/assets/115157819/6c106867-b534-46b5-a8d9-aaafbe45bcd0
+
+You can also comment a specific file with both **/explain** and **/execute** for the respective task.
+
+https://github.com/IWhitebird/tryu/assets/115157819/3a38127e-d464-4bf0-b49f-f280e1cd43e0
+
+
    <video alt="tryuvideo1" src="https://github.com/IWhitebird/tryu/assets/TryUApp1.mp4" width="276" height="537" />
        
-   The probot webhook is deployed on vercel.
-    
-    
+  The probot webhook is deployed on vercel.
 
-Uploading 20230914173311.mp4…
+ 
+    
 
