@@ -46,7 +46,7 @@ module.exports = (app) => {
             repo: repoName,
             owner: repoOwner,
             issue_number: pullNumber,
-            body: `Explanation for changes in ${file.filename}:\n${explanation}\n`,
+            body: `################################ Explanation for changes in **${file.filename}** #################################\n\n${explanation}\n`,
           });
         }
 
@@ -58,7 +58,7 @@ module.exports = (app) => {
               repo: repoName,
               owner: repoOwner,
               issue_number: pullNumber,
-              body: `Output for changes in ${file.filename}:\n${output}\n`,
+              body: `################################## Output for changes in **${file.filename}** ##################################\n\n${output}\n`,
             });
           }
         }
@@ -108,7 +108,7 @@ module.exports = (app) => {
           repo: repoName,
           owner: repoOwner,
           pull_number: pullNumber,
-          body: `Explanation for changes in ${file.filename}:\n${explanation}\n`,
+          body: `########## Explanation for changes in ${file.filename} ###########\n\n${explanation}\n`,
           commit_id: context.payload.comment.commit_id,
           path: context.payload.comment.path,
           position: context.payload.comment.position,
@@ -125,7 +125,7 @@ module.exports = (app) => {
             repo: repoName,
             owner: repoOwner,
             pull_number: pullNumber,
-            body: `Output for changes in ${file.filename}:\n${output}\n`,
+            body: `############ Output for changes in ${file.filename} #############\n\n${output}\n`,
             commit_id: context.payload.comment.commit_id,
             path: context.payload.comment.path,
             position: context.payload.comment.position,
@@ -162,27 +162,27 @@ module.exports = (app) => {
 
   async function getExplanation(code) {
     try {
-      return "yolo";
-      // const data = {
-      //   model: "pai-001-light-beta",
-      //   prompt: `Explain this code to me:\n' + ${code} + '\n\n`,
-      //   temperature: 0.7,
-      //   max_tokens: 256,
-      //   stop: ["Human:", "AI:"],
-      // };
+      // return "yolo";
+      const data = {
+        model: "pai-001-light-beta",
+        prompt: `Explain this code to me:\n' + ${code} + '\n\n`,
+        temperature: 0.7,
+        max_tokens: 256,
+        stop: ["Human:", "AI:"],
+      };
 
-      // const headers = {
-      //   Authorization: `Bearer ${process.env.FREE_LLM}`,
-      //   "Content-Type": "application/json",
-      // };
+      const headers = {
+        Authorization: `Bearer ${process.env.FREE_LLM}`,
+        "Content-Type": "application/json",
+      };
 
-      // const response = await axios.post(
-      //   "https://api.pawan.krd/v1/completions",
-      //   data,
-      //   { headers }
-      // );
+      const response = await axios.post(
+        "https://api.pawan.krd/v1/completions",
+        data,
+        { headers }
+      );
 
-      // return response.data.choices[0].text;
+      return response.data.choices[0].text;
     } catch (err) {
       console.error(err);
     }
