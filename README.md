@@ -4,8 +4,12 @@
  ## Run Locally
   Clone this repo then just run this commands
   -> `npm install`
-  -> `npm start`
   
+  -> `npm start`
+ ## Run on Docker
+  `docker pull iwhitebird/tryu-github-app:latest`
+  
+  `docker run -d -p 3000:3000 --name TryU iwhitebird/tryu-github-app:latest`
 
 *Note : Current /explain will not work as the free api locks the Ip address of first call*
 
