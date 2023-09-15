@@ -171,7 +171,6 @@ module.exports = (app) => {
 
   async function getExplanation(code) {
     try {
-      // return "yolo";
       const data = {
         model: "pai-001-light-beta",
         prompt: `Explain this code to me:\n' + ${code} + '\n\n`,
