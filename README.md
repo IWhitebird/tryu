@@ -23,17 +23,11 @@
 
 You can add **/explain** and **/execute** in the description while creating a pr and TryU-bot will automatically generate an explanation and execution(only if the code gives some output)
 
-https://github.com/IWhitebird/tryu/assets/115157819/6c106867-b534-46b5-a8d9-aaafbe45bcd0
+https://github.com/IWhitebird/tryu/assets/115157819/3a38127e-d464-4bf0-b49f-f280e1cd43e0
 
 You can also comment a specific file with both **/explain** and **/execute** for the respective task.
 
-https://github.com/IWhitebird/tryu/assets/115157819/3a38127e-d464-4bf0-b49f-f280e1cd43e0
-
-
-   <video alt="tryuvideo1" src="https://github.com/IWhitebird/tryu/assets/TryUApp1.mp4" width="276" height="537" />
-       
-  The probot webhook is deployed on vercel.
-
+https://github.com/IWhitebird/tryu/assets/115157819/6c106867-b534-46b5-a8d9-aaafbe45bcd0
  
     
 
